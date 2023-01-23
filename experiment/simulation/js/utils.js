@@ -12,8 +12,8 @@ var atomDetails = {
     color: '#5D3FD3',
   },
   Y: {
-    radius: 100,
-    color: '#5D3FD3',
+    radius: 60,
+    color: '#a9a9a9',
   },
   Z: {
     radius: 100,
@@ -318,10 +318,10 @@ export function createLattice(latticeID) {
   let atomlist = []
   if (latticeID == 0) {
     console.log('simple cubic')
-    let latticedims = [20, 20, 20]
-    for (let x = 0; x < latticedims[0]; x += 2) {
-      for (let y = 0; y < latticedims[1]; y += 2) {
-        for (let z = 0; z < latticedims[2]; z += 2) {
+    let latticedims = [6, 6, 6]
+    for (let x = -4; x < latticedims[0]; x += 2) {
+      for (let y = -4; y < latticedims[1]; y += 2) {
+        for (let z = -4; z < latticedims[2]; z += 2) {
           let pos = new THREE.Vector3(x, y, z)
           let atom = addSphereAtCoordinate(pos, 'X')
           atomlist.push(atom)

@@ -174,6 +174,49 @@ for (let i = 0; i < currentAtomList.length; i++) {
   scene.add(currentAtomList[i])
   atomList.push(currentAtomList[i])
 }
+
+var torotateatomlist = new THREE.Object3D()
+let activaterotation = 0
+var axis = new THREE.Vector3(1, 0, 0)
+var radians = Math.PI / 180
+var degrees = document.getElementById('Degrees')
+degrees.addEventListener('input', function () {
+  radians = (degrees.valueAsNumber / 180) * Math.PI
+})
+
+const RotateAction = document.getElementById('RotateAction')
+RotateAction.addEventListener('click', function () {
+  if (activaterotation == 0) {
+    activaterotation = 1
+  } else {
+    activaterotation = 0
+  }
+  console.log('rotating')
+  torotateatomlist = new THREE.Object3D()
+  for (let i = 0; i < atomList.length; i++) {
+    torotateatomlist.add(atomList[i])
+  }
+  scene.add(torotateatomlist)
+
+  if (SelectAtomList.length == 2) {
+    var pos1 = SelectAtomList[0].position
+    var pos2 = SelectAtomList[1].position
+    axis.subVectors(pos1, pos2)
+    console.log(axis)
+  }
+})
+
+var referenceAtomList = []
+function createReferenceAtoms(currentAtomList) {
+  for (let i = 0; i < currentAtomList.length; i++) {
+    var pos = currentAtomList[i].position
+    var atom = addSphereAtCoordinate(pos, 'Y', 'dummy')
+    scene.add(atom)
+    referenceAtomList.push(atom)
+  }
+}
+createReferenceAtoms(currentAtomList)
+
 currentLatticeElement.addEventListener('click', function () {
   currentLattice =
     currentLatticeElement.options[currentLatticeElement.selectedIndex].text
@@ -181,6 +224,12 @@ currentLatticeElement.addEventListener('click', function () {
   for (let i = 0; i < currentAtomList.length; i++) {
     scene.remove(currentAtomList[i])
   }
+  for (let i = 0; i < referenceAtomList.length; i++) {
+    scene.remove(referenceAtomList[i])
+  }
+
+  scene.remove(torotateatomlist)
+
   for (let i = 0; i < HullMeshList.length; i++) {
     scene.remove(HullMeshList[i])
   }
@@ -192,49 +241,8 @@ currentLatticeElement.addEventListener('click', function () {
     scene.add(currentAtomList[i])
     atomList.push(currentAtomList[i])
   }
+  createReferenceAtoms(currentAtomList)
 })
-// respond to prev/next lattice buttons
-// const PrevButton = document.getElementById('prev-btn')
-// PrevButton.addEventListener('click', function () {
-//   //   console.log('Prev Button clicked')
-//   latticeID = changeCurrentLatticePrev()
-//   for (let i = 0; i < currentAtomList.length; i++) {
-//     scene.remove(currentAtomList[i])
-//   }
-//   atomList = []
-//   SelectAtomList = []
-//   action = ''
-//   currentAtomList = createLattice(latticeID)
-
-//   for (let i = 0; i < currentAtomList.length; i++) {
-//     // console.log(currentAtomList[i])
-//     scene.add(currentAtomList[i])
-//     atomList.push(currentAtomList[i])
-//   }
-//   for (let i = 0; i < HullMeshList.length; i++) {
-//     scene.remove(HullMeshList[i])
-//   }
-// })
-// const NextButton = document.getElementById('next-btn')
-// NextButton.addEventListener('click', function () {
-//   //   console.log('Next Button clicked')
-//   latticeID = changeCurrentLatticeNext()
-//   for (let i = 0; i < currentAtomList.length; i++) {
-//     scene.remove(currentAtomList[i])
-//   }
-//   currentAtomList = createLattice(latticeID)
-//   atomList = []
-//   SelectAtomList = []
-//   action = ''
-//   for (let i = 0; i < currentAtomList.length; i++) {
-//     // console.log(currentAtomList[i])
-//     scene.add(currentAtomList[i])
-//     atomList.push(currentAtomList[i])
-//   }
-//   for (let i = 0; i < HullMeshList.length; i++) {
-//     scene.remove(HullMeshList[i])
-//   }
-// })
 
 // respond to check selected lattice
 const PerformAction = document.getElementById('PerformAction')
@@ -246,113 +254,6 @@ PerformAction.addEventListener('click', function () {
   if (out) lbl.innerHTML = "<span style='color: green;'>Correct</span>"
   else lbl.innerHTML = "<span style='color: red;'>InCorrect</span>"
 })
-
-// respond to select all atoms
-// const addSelectAll = document.getElementById("SelectAll");
-// addSelectAll.addEventListener("click", function () {
-//     if (action != "selectAll") {
-//         action = "selectAll";
-//     } else {
-//         action = "";
-//         SelectAtomList = [];
-//     }
-// });
-
-// respond to check for SCP
-// const addCheckSC = document.getElementById("CheckSC");
-// addCheckSC.addEventListener("click", function () {
-//     console.log("checking SCP packing");
-//     var checkresult = checkSCP(SelectAtomList);
-//     alert(checkresult);
-// });
-
-// respond to add atom by coordinate
-// const formAdd = document.getElementById("addatom");
-// formAdd.addEventListener("submit", function () {
-//     console.log("adding atom");
-//     var vec = formAdd.elements;
-//     var AddVec = new THREE.Vector3(
-//         parseFloat(vec[0].value),
-//         parseFloat(vec[1].value),
-//         parseFloat(vec[2].value)
-//     );
-//     var addedatom = addSphereAtCoordinate(AddVec, atomtype);
-//     console.log(AddVec, addedatom);
-//     scene.add(addedatom);
-//     atomList.push(addedatom);
-// });
-
-// respond to add dummy atom by coordinate
-// const formAdddummy = document.getElementById("adddummyatom");
-// formAdddummy.addEventListener("submit", function () {
-//     console.log("adding dummy atom");
-//     var vec = formAdddummy.elements;
-//     var AddVec = new THREE.Vector3(
-//         parseFloat(vec[0].value),
-//         parseFloat(vec[1].value),
-//         parseFloat(vec[2].value)
-//     );
-//     var addedatom = addSphereAtCoordinate(AddVec, "dummy");
-//     console.log(AddVec, addedatom);
-//     scene.add(addedatom);
-//     atomList.push(addedatom);
-// });
-
-// respond to repeat
-// const formRepeat = document.getElementById("repeat");
-// formRepeat.addEventListener("submit", function () {
-//     console.log("repeating");
-//     var vec = formRepeat.elements;
-//     var repeatVec = new THREE.Vector3(
-//         parseFloat(vec[0].value),
-//         parseFloat(vec[1].value),
-//         parseFloat(vec[2].value)
-//     );
-//     var newAtoms = RepeatPattern(SelectAtomList, repeatVec);
-//     console.log(repeatVec, newAtoms);
-//     for (let i = 0; i < newAtoms.length; i++) {
-//         scene.add(newAtoms[i]);
-//         atomList.push(newAtoms[i]);
-//     }
-//     SelectAtomList = newAtoms;
-// });
-
-// respond to translate
-// const formTranslate = document.getElementById("translate");
-// formTranslate.addEventListener("submit", function () {
-//     console.log("translating");
-//     var vec = formTranslate.elements;
-//     var translateVec = new THREE.Vector3(
-//         parseFloat(vec[0].value),
-//         parseFloat(vec[1].value),
-//         parseFloat(vec[2].value)
-//     );
-//     var count = parseFloat(vec[3].value);
-//     var newAtoms = TranslatePattern(SelectAtomList, translateVec, count);
-//     console.log(translateVec, newAtoms);
-//     for (let i = 0; i < newAtoms.length; i++) {
-//         scene.add(newAtoms[i]);
-//         atomList.push(newAtoms[i]);
-//     }
-//     SelectAtomList = newAtoms;
-// });
-
-// respond to move
-// const formMove = document.getElementById("move");
-// formMove.addEventListener("submit", function () {
-//     console.log("moving");
-//     var vec = formMove.elements;
-//     var moveVector = new THREE.Vector3(
-//         parseFloat(vec[0].value),
-//         parseFloat(vec[1].value),
-//         parseFloat(vec[2].value)
-//     );
-//     moveSelectList(SelectAtomList, moveVector);
-//     console.log(moveVector, SelectAtomList);
-// });
-
-// const translateList = document.getElementById("TranslatePattern");
-// translateList.addEventListener("click", function () {});
 
 // make the window responsive
 // window.addEventListener("resize", () => {
@@ -374,8 +275,17 @@ document.addEventListener('mouseup', function (event) {
 })
 
 // render the scene and animate
+var rotatetick = 0
+var frames = 30
 var render = function () {
   highlightSelectList(SelectAtomList, atomList)
+
+  if (activaterotation) {
+    torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
+  }
+
+  rotatetick += 1
+
   // updateButtonCSS(action);
   INTERSECTED = CheckHover(mouse, camera, atomList, INTERSECTED)
   requestAnimationFrame(render)
