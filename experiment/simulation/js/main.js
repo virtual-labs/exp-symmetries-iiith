@@ -273,7 +273,7 @@ currentLatticeElement.addEventListener('click', function () {
 const PerformAction = document.getElementById('PerformAction')
 PerformAction.addEventListener('click', function () {
   //   console.log('Check Lattice Clicked')
-  let out = performaction(LatticeList.indexOf(currentLattice), SelectAtomList)
+  let out = performaction(LatticeList.indexOf(currentLattice), axis, radians)
   let lbl = document.getElementById('lattice-result')
 
   if (out) lbl.innerHTML = "<span style='color: green;'>Correct</span>"

@@ -480,17 +480,21 @@ export function latticeChecker(latticeID, SelectAtomList) {
   }
 }
 
-export function performaction(latticeID, SelectAtomList) {
+export function performaction(latticeID, axis, radians) {
   if (latticeID == 0) {
     console.log('performing action for ', LatticeList[latticeID])
+    return 0
   }
   if (latticeID == 1) {
     console.log('performing action for ', LatticeList[latticeID])
+    return 0
   }
   if (latticeID == 2) {
     console.log('performing action for ', LatticeList[latticeID])
+    return 0
   }
   if (latticeID == 3) {
     console.log('performing action for ', LatticeList[latticeID])
+    return 0
   }
 }
