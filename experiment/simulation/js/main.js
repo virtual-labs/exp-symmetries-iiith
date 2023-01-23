@@ -158,6 +158,7 @@ addSelectList.addEventListener('click', function () {
     SelectAtomList = []
   }
 })
+
 const LatticeList = [
   'Simple Cubic',
   'Face Centered Cubic',
@@ -179,32 +180,56 @@ var torotateatomlist = new THREE.Object3D()
 let activaterotation = 0
 var axis = new THREE.Vector3(1, 0, 0)
 var radians = Math.PI / 180
-var degrees = document.getElementById('Degrees')
-degrees.addEventListener('input', function () {
-  radians = (degrees.valueAsNumber / 180) * Math.PI
-})
 
-const RotateAction = document.getElementById('RotateAction')
-RotateAction.addEventListener('click', function () {
-  if (activaterotation == 0) {
-    activaterotation = 1
-  } else {
-    activaterotation = 0
-  }
+const Slider = document.getElementById('Slider')
+const sliderval = document.getElementById('sliderval')
+sliderval.innerHTML = Slider.valueAsNumber
+
+Slider.oninput = function () {
+  sliderval.innerHTML = Slider.valueAsNumber
+  radians = (Slider.valueAsNumber / 180) * Math.PI
+
   console.log('rotating')
   torotateatomlist = new THREE.Object3D()
   for (let i = 0; i < atomList.length; i++) {
     torotateatomlist.add(atomList[i])
   }
-  scene.add(torotateatomlist)
-
   if (SelectAtomList.length == 2) {
     var pos1 = SelectAtomList[0].position
     var pos2 = SelectAtomList[1].position
     axis.subVectors(pos1, pos2)
     console.log(axis)
   }
-})
+  scene.add(torotateatomlist)
+  torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
+}
+
+// var degrees = document.getElementById('Degrees')
+// degrees.addEventListener('input', function () {
+//   radians = (degrees.valueAsNumber / 180) * Math.PI
+// })
+
+// const RotateAction = document.getElementById('RotateAction')
+// RotateAction.addEventListener('click', function () {
+//   if (activaterotation == 0) {
+//     activaterotation = 1
+//   } else {
+//     activaterotation = 0
+//   }
+//   console.log('rotating')
+//   torotateatomlist = new THREE.Object3D()
+//   for (let i = 0; i < atomList.length; i++) {
+//     torotateatomlist.add(atomList[i])
+//   }
+//   scene.add(torotateatomlist)
+
+//   if (SelectAtomList.length == 2) {
+//     var pos1 = SelectAtomList[0].position
+//     var pos2 = SelectAtomList[1].position
+//     axis.subVectors(pos1, pos2)
+//     console.log(axis)
+//   }
+// })
 
 var referenceAtomList = []
 function createReferenceAtoms(currentAtomList) {
@@ -280,11 +305,11 @@ var frames = 30
 var render = function () {
   highlightSelectList(SelectAtomList, atomList)
 
-  if (activaterotation) {
-    torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
-  }
+  //   if (activaterotation) {
+  //     torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
+  //   }
 
-  rotatetick += 1
+  //   rotatetick += 1
 
   // updateButtonCSS(action);
   INTERSECTED = CheckHover(mouse, camera, atomList, INTERSECTED)

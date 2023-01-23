@@ -107,23 +107,33 @@
                             value="PERFORM ACTION"
                         />
                         <br />
-
-                        <input
+                        <div class="slidecontainer">
+                            <input
+                                type="range"
+                                min="0"
+                                max="360"
+                                value="0"
+                                class="slider"
+                                id="Slider"
+                            />
+                            <p>Value: <span id="sliderval"></span></p>
+                        </div>
+                        <!-- <input
                             class="button is-responsive is-small is-link"
                             style="margin: 0.5rem"
                             id="Degrees"
                             type="number"
                             value="5"
                         />
-                        <br />
+                        <br /> -->
 
-                        <input
+                        <!-- <input
                             class="button is-responsive is-small is-link"
                             style="margin: 0.5rem"
                             id="RotateAction"
                             type="submit"
                             value="Rotate about axis"
-                        />
+                        /> -->
                         <label class="v-datalist-title" id="lattice-result"></label>
                     </div>
                 </div>

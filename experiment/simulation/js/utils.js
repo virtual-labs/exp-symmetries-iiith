@@ -330,7 +330,7 @@ export function createLattice(latticeID) {
     }
   } else if (latticeID == 1) {
     console.log('adding face centered cubic')
-    let latticedims = [20, 20, 20]
+    let latticedims = [9, 9, 9]
     for (let x = 0; x < latticedims[0]; x += 3) {
       for (let y = 0; y < latticedims[1]; y += 3) {
         for (let z = 0; z < latticedims[2]; z += 3) {
@@ -369,7 +369,7 @@ export function createLattice(latticeID) {
     }
   } else if (latticeID == 2) {
     console.log('adding body centered cubic')
-    let latticedims = [20, 20, 20]
+    let latticedims = [8, 8, 8]
     for (let x = 0; x < latticedims[0]; x += 4) {
       for (let y = 0; y < latticedims[1]; y += 4) {
         for (let z = 0; z < latticedims[2]; z += 4) {
@@ -390,7 +390,7 @@ export function createLattice(latticeID) {
     }
   } else if (latticeID == 3) {
     console.log('adding HCP')
-    let latticedims = [20, 20, 20]
+    let latticedims = [9, 9, 9]
     let height = 0
     for (let z = 0; z < latticedims[2]; z += 1.732) {
       if (height % 2 == 0) {
