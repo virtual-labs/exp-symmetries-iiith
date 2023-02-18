@@ -480,7 +480,178 @@ export function latticeChecker(latticeID, SelectAtomList) {
   }
 }
 
-export function performaction(latticeID, SelectAtomList, atomList) {
+// export function performaction(latticeID, SelectAtomList, atomList) {
+//   if (latticeID == 0) {
+//     console.log('performing action for ', LatticeList[latticeID])
+//     if (SelectAtomList.length == 1) {
+//       var cenpos = SelectAtomList[0].position.clone()
+//       for (let i = 0; i < atomList.length; i++) {
+//         var currpos = atomList[i].position.clone()
+//         let x = 2 * cenpos.x - currpos.x
+//         let y = 2 * cenpos.y - currpos.y
+//         let z = 2 * cenpos.z - currpos.z
+//         atomList[i].position.set(x, y, z)
+//       }
+//     } else if (SelectAtomList.length == 2) {
+//       var el = document.getElementById('Slider')
+//       var an = el.valueAsNumber
+//       var angle = parseFloat(an)
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//     } else if (SelectAtomList.length == 3) {
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//       var pos3 = SelectAtomList[2].position.clone()
+//       let a1 = pos2.x - pos1.x
+//       let b1 = pos2.y - pos1.y
+//       let c1 = pos2.z - pos1.z
+//       let a2 = pos3.x - pos1.x
+//       let b2 = pos3.y - pos1.y
+//       let c2 = pos3.z - pos1.z
+//       let a = b1 * c2 - b2 * c1
+//       let b = a2 * c1 - a1 * c2
+//       let c = a1 * b2 - b1 * a2
+//       let d = -a * pos1.x - b * pos1.y - c * pos1.z
+//       for (let i = 0; i < atomList.length; i++) {
+//         let x = atomList[i].position.clone().x
+//         let y = atomList[i].position.clone().y
+//         let z = atomList[i].position.clone().z
+//         let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+//         atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+//       }
+//     } else {
+//       console.log('incorrect number of atoms!')
+//     }
+//   }
+//   if (latticeID == 1) {
+//     console.log('performing action for ', LatticeList[latticeID])
+//     if (SelectAtomList.length == 1) {
+//       var cenpos = SelectAtomList[0].position.clone()
+//       for (let i = 0; i < atomList.length; i++) {
+//         var currpos = atomList[i].position.clone()
+//         let x = 2 * cenpos.x - currpos.x
+//         let y = 2 * cenpos.y - currpos.y
+//         let z = 2 * cenpos.z - currpos.z
+//         atomList[i].position.set(x, y, z)
+//       }
+//     } else if (SelectAtomList.length == 2) {
+//       var el = document.getElementById('Slider')
+//       var an = el.valueAsNumber
+//       var angle = parseFloat(an)
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//     } else if (SelectAtomList.length == 3) {
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//       var pos3 = SelectAtomList[2].position.clone()
+//       let a1 = pos2.x - pos1.x
+//       let b1 = pos2.y - pos1.y
+//       let c1 = pos2.z - pos1.z
+//       let a2 = pos3.x - pos1.x
+//       let b2 = pos3.y - pos1.y
+//       let c2 = pos3.z - pos1.z
+//       let a = b1 * c2 - b2 * c1
+//       let b = a2 * c1 - a1 * c2
+//       let c = a1 * b2 - b1 * a2
+//       let d = -a * pos1.x - b * pos1.y - c * pos1.z
+//       for (let i = 0; i < atomList.length; i++) {
+//         let x = atomList[i].position.clone().x
+//         let y = atomList[i].position.clone().y
+//         let z = atomList[i].position.clone().z
+//         let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+//         atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+//       }
+//     } else {
+//       console.log('incorrect number of atoms!')
+//     }
+//   }
+//   if (latticeID == 2) {
+//     console.log('performing action for ', LatticeList[latticeID])
+//     if (SelectAtomList.length == 1) {
+//       var cenpos = SelectAtomList[0].position.clone()
+//       for (let i = 0; i < atomList.length; i++) {
+//         var currpos = atomList[i].position.clone()
+//         let x = 2 * cenpos.x - currpos.x
+//         let y = 2 * cenpos.y - currpos.y
+//         let z = 2 * cenpos.z - currpos.z
+//         atomList[i].position.set(x, y, z)
+//       }
+//     } else if (SelectAtomList.length == 2) {
+//       var el = document.getElementById('Slider')
+//       var an = el.valueAsNumber
+//       var angle = parseFloat(an)
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//     } else if (SelectAtomList.length == 3) {
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//       var pos3 = SelectAtomList[2].position.clone()
+//       let a1 = pos2.x - pos1.x
+//       let b1 = pos2.y - pos1.y
+//       let c1 = pos2.z - pos1.z
+//       let a2 = pos3.x - pos1.x
+//       let b2 = pos3.y - pos1.y
+//       let c2 = pos3.z - pos1.z
+//       let a = b1 * c2 - b2 * c1
+//       let b = a2 * c1 - a1 * c2
+//       let c = a1 * b2 - b1 * a2
+//       let d = -a * pos1.x - b * pos1.y - c * pos1.z
+//       for (let i = 0; i < atomList.length; i++) {
+//         let x = atomList[i].position.clone().x
+//         let y = atomList[i].position.clone().y
+//         let z = atomList[i].position.clone().z
+//         let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+//         atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+//       }
+//     } else {
+//       console.log('incorrect number of atoms!')
+//     }
+//   }
+//   if (latticeID == 3) {
+//     console.log('performing action for ', LatticeList[latticeID])
+//     if (SelectAtomList.length == 1) {
+//       var cenpos = SelectAtomList[0].position.clone()
+//       for (let i = 0; i < atomList.length; i++) {
+//         var currpos = atomList[i].position.clone()
+//         let x = 2 * cenpos.x - currpos.x
+//         let y = 2 * cenpos.y - currpos.y
+//         let z = 2 * cenpos.z - currpos.z
+//         atomList[i].position.set(x, y, z)
+//       }
+//     } else if (SelectAtomList.length == 2) {
+//       var el = document.getElementById('Slider')
+//       var an = el.valueAsNumber
+//       var angle = parseFloat(an)
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//     } else if (SelectAtomList.length == 3) {
+//       var pos1 = SelectAtomList[0].position.clone()
+//       var pos2 = SelectAtomList[1].position.clone()
+//       var pos3 = SelectAtomList[2].position.clone()
+//       let a1 = pos2.x - pos1.x
+//       let b1 = pos2.y - pos1.y
+//       let c1 = pos2.z - pos1.z
+//       let a2 = pos3.x - pos1.x
+//       let b2 = pos3.y - pos1.y
+//       let c2 = pos3.z - pos1.z
+//       let a = b1 * c2 - b2 * c1
+//       let b = a2 * c1 - a1 * c2
+//       let c = a1 * b2 - b1 * a2
+//       let d = -a * pos1.x - b * pos1.y - c * pos1.z
+//       for (let i = 0; i < atomList.length; i++) {
+//         let x = atomList[i].position.clone().x
+//         let y = atomList[i].position.clone().y
+//         let z = atomList[i].position.clone().z
+//         let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+//         atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+//       }
+//     } else {
+//       console.log('incorrect number of atoms!')
+//     }
+//   }
+// }
+
+export function PointSymmetry(latticeID, SelectAtomList, atomList) {
   if (latticeID == 0) {
     console.log('performing action for ', LatticeList[latticeID])
     if (SelectAtomList.length == 1) {
@@ -492,35 +663,8 @@ export function performaction(latticeID, SelectAtomList, atomList) {
         let z = 2 * cenpos.z - currpos.z
         atomList[i].position.set(x, y, z)
       }
-    } else if (SelectAtomList.length == 2) {
-      var el = document.getElementById('Slider')
-      var an = el.valueAsNumber
-      var angle = parseFloat(an)
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-    } else if (SelectAtomList.length == 3) {
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-      var pos3 = SelectAtomList[2].position.clone()
-      let a1 = pos2.x - pos1.x
-      let b1 = pos2.y - pos1.y
-      let c1 = pos2.z - pos1.z
-      let a2 = pos3.x - pos1.x
-      let b2 = pos3.y - pos1.y
-      let c2 = pos3.z - pos1.z
-      let a = b1 * c2 - b2 * c1
-      let b = a2 * c1 - a1 * c2
-      let c = a1 * b2 - b1 * a2
-      let d = -a * pos1.x - b * pos1.y - c * pos1.z
-      for (let i = 0; i < atomList.length; i++) {
-        let x = atomList[i].position.clone().x
-        let y = atomList[i].position.clone().y
-        let z = atomList[i].position.clone().z
-        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
-        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
-      }
     } else {
-      console.log('incorrect number of atoms!')
+      alert('incorrect number of atoms!')
     }
   }
   if (latticeID == 1) {
@@ -534,35 +678,8 @@ export function performaction(latticeID, SelectAtomList, atomList) {
         let z = 2 * cenpos.z - currpos.z
         atomList[i].position.set(x, y, z)
       }
-    } else if (SelectAtomList.length == 2) {
-      var el = document.getElementById('Slider')
-      var an = el.valueAsNumber
-      var angle = parseFloat(an)
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-    } else if (SelectAtomList.length == 3) {
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-      var pos3 = SelectAtomList[2].position.clone()
-      let a1 = pos2.x - pos1.x
-      let b1 = pos2.y - pos1.y
-      let c1 = pos2.z - pos1.z
-      let a2 = pos3.x - pos1.x
-      let b2 = pos3.y - pos1.y
-      let c2 = pos3.z - pos1.z
-      let a = b1 * c2 - b2 * c1
-      let b = a2 * c1 - a1 * c2
-      let c = a1 * b2 - b1 * a2
-      let d = -a * pos1.x - b * pos1.y - c * pos1.z
-      for (let i = 0; i < atomList.length; i++) {
-        let x = atomList[i].position.clone().x
-        let y = atomList[i].position.clone().y
-        let z = atomList[i].position.clone().z
-        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
-        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
-      }
     } else {
-      console.log('incorrect number of atoms!')
+      alert('incorrect number of atoms!')
     }
   }
   if (latticeID == 2) {
@@ -576,35 +693,8 @@ export function performaction(latticeID, SelectAtomList, atomList) {
         let z = 2 * cenpos.z - currpos.z
         atomList[i].position.set(x, y, z)
       }
-    } else if (SelectAtomList.length == 2) {
-      var el = document.getElementById('Slider')
-      var an = el.valueAsNumber
-      var angle = parseFloat(an)
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-    } else if (SelectAtomList.length == 3) {
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-      var pos3 = SelectAtomList[2].position.clone()
-      let a1 = pos2.x - pos1.x
-      let b1 = pos2.y - pos1.y
-      let c1 = pos2.z - pos1.z
-      let a2 = pos3.x - pos1.x
-      let b2 = pos3.y - pos1.y
-      let c2 = pos3.z - pos1.z
-      let a = b1 * c2 - b2 * c1
-      let b = a2 * c1 - a1 * c2
-      let c = a1 * b2 - b1 * a2
-      let d = -a * pos1.x - b * pos1.y - c * pos1.z
-      for (let i = 0; i < atomList.length; i++) {
-        let x = atomList[i].position.clone().x
-        let y = atomList[i].position.clone().y
-        let z = atomList[i].position.clone().z
-        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
-        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
-      }
     } else {
-      console.log('incorrect number of atoms!')
+      alert('incorrect number of atoms!')
     }
   }
   if (latticeID == 3) {
@@ -618,13 +708,16 @@ export function performaction(latticeID, SelectAtomList, atomList) {
         let z = 2 * cenpos.z - currpos.z
         atomList[i].position.set(x, y, z)
       }
-    } else if (SelectAtomList.length == 2) {
-      var el = document.getElementById('Slider')
-      var an = el.valueAsNumber
-      var angle = parseFloat(an)
-      var pos1 = SelectAtomList[0].position.clone()
-      var pos2 = SelectAtomList[1].position.clone()
-    } else if (SelectAtomList.length == 3) {
+    } else {
+      alert('incorrect number of atoms!')
+    }
+  }
+}
+
+export function PlaneSymmetry(latticeID, SelectAtomList, atomList) {
+  if (latticeID == 0) {
+    console.log('performing action for ', LatticeList[latticeID])
+    if (SelectAtomList.length == 3) {
       var pos1 = SelectAtomList[0].position.clone()
       var pos2 = SelectAtomList[1].position.clone()
       var pos3 = SelectAtomList[2].position.clone()
@@ -646,7 +739,91 @@ export function performaction(latticeID, SelectAtomList, atomList) {
         atomList[i].position.set(x + t * a, y + t * b, z + t * c)
       }
     } else {
-      console.log('incorrect number of atoms!')
+      alert('incorrect number of atoms!')
     }
   }
+  if (latticeID == 1) {
+    console.log('performing action for ', LatticeList[latticeID])
+    if (SelectAtomList.length == 3) {
+      var pos1 = SelectAtomList[0].position.clone()
+      var pos2 = SelectAtomList[1].position.clone()
+      var pos3 = SelectAtomList[2].position.clone()
+      let a1 = pos2.x - pos1.x
+      let b1 = pos2.y - pos1.y
+      let c1 = pos2.z - pos1.z
+      let a2 = pos3.x - pos1.x
+      let b2 = pos3.y - pos1.y
+      let c2 = pos3.z - pos1.z
+      let a = b1 * c2 - b2 * c1
+      let b = a2 * c1 - a1 * c2
+      let c = a1 * b2 - b1 * a2
+      let d = -a * pos1.x - b * pos1.y - c * pos1.z
+      for (let i = 0; i < atomList.length; i++) {
+        let x = atomList[i].position.clone().x
+        let y = atomList[i].position.clone().y
+        let z = atomList[i].position.clone().z
+        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+      }
+    } else {
+      alert('incorrect number of atoms!')
+    }
+  }
+  if (latticeID == 2) {
+    console.log('performing action for ', LatticeList[latticeID])
+    if (SelectAtomList.length == 3) {
+      var pos1 = SelectAtomList[0].position.clone()
+      var pos2 = SelectAtomList[1].position.clone()
+      var pos3 = SelectAtomList[2].position.clone()
+      let a1 = pos2.x - pos1.x
+      let b1 = pos2.y - pos1.y
+      let c1 = pos2.z - pos1.z
+      let a2 = pos3.x - pos1.x
+      let b2 = pos3.y - pos1.y
+      let c2 = pos3.z - pos1.z
+      let a = b1 * c2 - b2 * c1
+      let b = a2 * c1 - a1 * c2
+      let c = a1 * b2 - b1 * a2
+      let d = -a * pos1.x - b * pos1.y - c * pos1.z
+      for (let i = 0; i < atomList.length; i++) {
+        let x = atomList[i].position.clone().x
+        let y = atomList[i].position.clone().y
+        let z = atomList[i].position.clone().z
+        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+      }
+    } else {
+      alert('incorrect number of atoms!')
+    }
+  }
+  if (latticeID == 3) {
+    console.log('performing action for ', LatticeList[latticeID])
+    if (SelectAtomList.length == 3) {
+      var pos1 = SelectAtomList[0].position.clone()
+      var pos2 = SelectAtomList[1].position.clone()
+      var pos3 = SelectAtomList[2].position.clone()
+      let a1 = pos2.x - pos1.x
+      let b1 = pos2.y - pos1.y
+      let c1 = pos2.z - pos1.z
+      let a2 = pos3.x - pos1.x
+      let b2 = pos3.y - pos1.y
+      let c2 = pos3.z - pos1.z
+      let a = b1 * c2 - b2 * c1
+      let b = a2 * c1 - a1 * c2
+      let c = a1 * b2 - b1 * a2
+      let d = -a * pos1.x - b * pos1.y - c * pos1.z
+      for (let i = 0; i < atomList.length; i++) {
+        let x = atomList[i].position.clone().x
+        let y = atomList[i].position.clone().y
+        let z = atomList[i].position.clone().z
+        let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+        atomList[i].position.set(x + t * a, y + t * b, z + t * c)
+      }
+    } else {
+      alert('incorrect number of atoms!')
+    }
+  }
+}
+export function CheckSymmetry(latticeID, SelectAtomList, atomList, degree) {
+  return 0
 }

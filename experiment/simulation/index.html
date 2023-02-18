@@ -20,26 +20,32 @@
                 <div class="v-collapsible">Instructions</div>
                 <div id="procedure-message" class="v-content">
                     <li class="instr-font">
-                        The arrows to the sides of the name of the lattice should be used for
-                        navigating between different lattices
+                        This experiment is designed to teach various symmetries that exist in
+                        crystal lattices.
                     </li>
                     <li class="instr-font">
-                        Left click and drag to move the camera around. You can use the mouse scroll
-                        wheel to zoom in or zoom out.
+                        The left side of the UI shows the current Lattice being rendered. One may
+                        use the dropdown to switch to other lattices.
                     </li>
-                    <li class="instr-font">
-                        To select atoms, click on the select atoms button. It is to be noted that
-                        the select atoms button is a toggle switch. Once you have made your choice,
-                        click on the check vectors button to get the result of your choice.
+                    <li class="'instr-font">
+                        The 'Select Atoms' button enables the select atom mode in which the user can
+                        select the atoms of interest which will later be used to verify planar
+                        symmetry(if three points chosen), point symmetry (if one point chosen) and
+                        rotational symmetry if two poitns chosen.
                     </li>
-                    <li class="instr-font">
-                        You may use the select region button to visualize the convex polyhedron
-                        constructed by the selected atoms. Note that this function will only work if
-                        the selected atoms form a valid convex polyhedron
+                    <li class="'instr-font">
+                        After selecting the points of interest, the user may click 'Point symmetry'
+                        to visualize the point symmetry across the one point selected. One may use
+                        the slider to rotate the system of atoms across the axis of the two points
+                        selected. One may use the 'Plane Symmetry' button to visualise the planar
+                        symmetry across the plane formed by the three selected points.
                     </li>
-                    <li class="instr-font">
-                        Please select the set of atoms(in any order), all of which are a part of a
-                        unique primitive or non primitive lattice.
+                    <li class="'instr-font">
+                        Once the points are selected, 'Check Symmetry' button can be used to check
+                        if such a symmetry exists in the lattice provided. The function will verify
+                        for the symmerty depending on the points chosen. Like if one point is
+                        selected then it will verify point symmetry, two points for rotational
+                        symmetry and three points for planar symmetry.
                     </li>
                 </div>
             </div>
@@ -48,7 +54,7 @@
         <main
             class="columns is-centered is-variable is-1-mobile is-flex is-flex-wrap-wrap workspace"
         >
-            <aside id="left" class="column is-2-desktop is-5-tablet is-5-mobile apparatus">
+            <aside id="left" class="column is-3-desktop is-5-tablet is-5-mobile apparatus">
                 <div class="v-datalist-container">
                     <div class="v-datalist-row">
                         <div class="v-datalist-title" id="disp-heading">Navigate Lattices</div>
@@ -97,16 +103,9 @@
                     </div>
                     <div class="v-datalist-row" id="top-border">
                         <div class="v-datalist-title" id="disp-heading">
-                            Check Symmetry across the points chosen
+                            Rotate the system using the Slider
                         </div>
-                        <input
-                            class="button is-responsive is-small is-link"
-                            style="margin: 0.5rem"
-                            id="PerformAction"
-                            type="submit"
-                            value="PERFORM ACTION"
-                        />
-                        <br />
+
                         <div class="slidecontainer">
                             <input
                                 type="range"
@@ -118,29 +117,59 @@
                             />
                             <p>Value: <span id="sliderval"></span></p>
                         </div>
-                        <!-- <input
-                            class="button is-responsive is-small is-link"
-                            style="margin: 0.5rem"
-                            id="Degrees"
-                            type="number"
-                            value="5"
-                        />
-                        <br /> -->
+                    </div>
+                    <div class="v-datalist-row" id="top-border">
+                        <div class="v-datalist-title" id="disp-heading">
+                            Visualize Symmetry across the points chosen
+                        </div>
 
+                        <input
+                            class="button is-responsive is-small is-link"
+                            style="margin: 0.5rem"
+                            id="PointSymmetry"
+                            type="submit"
+                            value="Point Symmetry"
+                        />
+                        <input
+                            class="button is-responsive is-small is-link"
+                            style="margin: 0.5rem"
+                            id="PlaneSymmetry"
+                            type="submit"
+                            value="Plane Symmetry"
+                        />
                         <!-- <input
                             class="button is-responsive is-small is-link"
                             style="margin: 0.5rem"
-                            id="RotateAction"
+                            id="PerformAction"
                             type="submit"
-                            value="Rotate about axis"
+                            value="Perform Action"
                         /> -->
-                        <label class="v-datalist-title" id="lattice-result"></label>
+                    </div>
+                    <div class="v-datalist-row" id="top-border">
+                        <div class="v-datalist-title" id="disp-heading">
+                            Check the type of symmetry
+                        </div>
+
+                        <input
+                            class="button is-responsive is-small is-link"
+                            style="margin: 0.5rem"
+                            id="CheckSymmetry"
+                            type="submit"
+                            value="Check Symmetry"
+                        />
                     </div>
                 </div>
             </aside>
 
-            <aside class="column is-8-desktop is-10-tablet is-10-mobile exp">
+            <aside id="center" class="column is-7-desktop is-8-tablet is-8-mobile apparatus">
                 <div class="v-canvas-container" id="canvas-main"></div>
+            </aside>
+            <aside id="right" class="column is-2-desktop is-5-tablet is-5-mobile apparatus">
+                <div class="v-datalist-container">
+                    <div class="v-datalist-title">Observations</div>
+                    <div class="v-datalist-row" id="top-border"></div>
+                    <label class="v-datalist-title" id="symmetry-result"></label>
+                </div>
             </aside>
         </main>
         <script type="module" src="js/three.js"></script>

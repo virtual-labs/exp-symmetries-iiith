@@ -18,7 +18,9 @@ import {
   changeCurrentLatticeNext,
   createLattice,
   latticeChecker,
-  performaction,
+  CheckSymmetry,
+  PlaneSymmetry,
+  PointSymmetry,
 } from './utils.js'
 
 var container = document.getElementById('canvas-main')
@@ -119,33 +121,6 @@ var atomList = []
 var SelectAtomList = []
 var BoundaryAtomList = []
 var HullMeshList = []
-// var currentatom = document.getElementById("atomtype");
-// var atomtype = currentatom.options[currentatom.selectedIndex].text;
-
-// select region enclosed between the atoms
-// const selectRegion = document.getElementById('SelectRegion')
-// selectRegion.addEventListener('click', function () {
-//   let vals = select_Region(SelectAtomList, atomList)
-//   let hullmesh = vals.mesh
-//   let arr = vals.selectarray
-//   for (let i = 0; i < arr.length; i++) {
-//     SelectAtomList.push(arr[i])
-//   }
-//   //   console.log(hullmesh)
-//   scene.add(hullmesh)
-//   HullMeshList.push(hullmesh)
-// })
-
-// respond to click addAtom
-// const addSphereButton = document.getElementById("AddAtom");
-// addSphereButton.addEventListener("click", function () {
-//     console.log("adding atom mode");
-//     if (action != "addAtom") {
-//         action = "addAtom";
-//     } else {
-//         action = "";
-//     }
-// });
 
 // respond to select a bunch of atoms
 const addSelectList = document.getElementById('SelectAtom')
@@ -204,33 +179,6 @@ Slider.oninput = function () {
   torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
 }
 
-// var degrees = document.getElementById('Degrees')
-// degrees.addEventListener('input', function () {
-//   radians = (degrees.valueAsNumber / 180) * Math.PI
-// })
-
-// const RotateAction = document.getElementById('RotateAction')
-// RotateAction.addEventListener('click', function () {
-//   if (activaterotation == 0) {
-//     activaterotation = 1
-//   } else {
-//     activaterotation = 0
-//   }
-//   console.log('rotating')
-//   torotateatomlist = new THREE.Object3D()
-//   for (let i = 0; i < atomList.length; i++) {
-//     torotateatomlist.add(atomList[i])
-//   }
-//   scene.add(torotateatomlist)
-
-//   if (SelectAtomList.length == 2) {
-//     var pos1 = SelectAtomList[0].position
-//     var pos2 = SelectAtomList[1].position
-//     axis.subVectors(pos1, pos2)
-//     console.log(axis)
-//   }
-// })
-
 var referenceAtomList = []
 function createReferenceAtoms(currentAtomList) {
   for (let i = 0; i < currentAtomList.length; i++) {
@@ -269,39 +217,49 @@ currentLatticeElement.addEventListener('click', function () {
   createReferenceAtoms(currentAtomList)
 })
 
-// respond to check selected lattice\
 // respond to check selected lattice
-const PerformAction = document.getElementById('PerformAction')
-PerformAction.addEventListener('click', function () {
-  //   console.log('Check Lattice Clicked')
-  let out = performaction(
+
+const PointSymmetryElement = document.getElementById('PointSymmetry')
+PointSymmetryElement.addEventListener('click', function () {
+  let out = PointSymmetry(
     LatticeList.indexOf(currentLattice),
     SelectAtomList,
     atomList,
   )
-  let lbl = document.getElementById('lattice-result')
+})
+
+const PlaneSymmetryElement = document.getElementById('PlaneSymmetry')
+PlaneSymmetryElement.addEventListener('click', function () {
+  let out = PlaneSymmetry(
+    LatticeList.indexOf(currentLattice),
+    SelectAtomList,
+    atomList,
+  )
+})
+// const PerformAction = document.getElementById('PerformAction')
+// PerformAction.addEventListener('click', function () {
+//   let out = performaction(
+//     LatticeList.indexOf(currentLattice),
+//     SelectAtomList,
+//     atomList,
+//   )
+// })
+
+const checksymmetry = document.getElementById('CheckSymmetry')
+checksymmetry.addEventListener('click', function () {
+  var degree = Slider.valueAsNumber
+  let out = CheckSymmetry(
+    LatticeList.indexOf(currentLattice),
+    SelectAtomList,
+    atomList,
+    degree,
+  )
+  let lbl = document.getElementById('symmetry-result')
 
   if (out) lbl.innerHTML = "<span style='color: green;'>Correct</span>"
   else lbl.innerHTML = "<span style='color: red;'>InCorrect</span>"
   //SelectAtomList = []
 })
-
-// const PerformAction = document.getElementById('PerformAction')
-// PerformAction.addEventListener('click', function () {
-//   //   console.log('Check Lattice Clicked')
-//   let out = performaction(LatticeList.indexOf(currentLattice), axis, radians)
-//   let lbl = document.getElementById('lattice-result')
-
-//   if (out) lbl.innerHTML = "<span style='color: green;'>Correct</span>"
-//   else lbl.innerHTML = "<span style='color: red;'>InCorrect</span>"
-// })
-
-// make the window responsive
-// window.addEventListener("resize", () => {
-//     renderer.setSize(container.clientWidth, container.clientHeight);
-//     camera.aspect = container.clientWidth / container.clientHeight;
-//     camera.updateProjectionMatrix();
-// });
 
 document.addEventListener('mouseup', function (event) {
   if (drag == false) {
@@ -321,13 +279,6 @@ var frames = 30
 var render = function () {
   highlightSelectList(SelectAtomList, atomList)
 
-  //   if (activaterotation) {
-  //     torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
-  //   }
-
-  //   rotatetick += 1
-
-  // updateButtonCSS(action);
   INTERSECTED = CheckHover(mouse, camera, atomList, INTERSECTED)
   requestAnimationFrame(render)
   controls.update()

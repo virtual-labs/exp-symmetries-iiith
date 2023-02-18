@@ -234,6 +234,30 @@
   font-size: 16px;
   font-weight: bold;
 }
+#PointSymmetry {
+  background-color: #3298dc;
+  border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+#PlaneSymmetry {
+  background-color: #3298dc;
+  border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+#CheckSymmetry {
+  background-color: #3298dc;
+  border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
 #Degrees {
   background-color: white;
   border-radius: 0.5rem;
@@ -396,6 +420,7 @@
   background-color: #48c774;
   border-radius: 0.5rem;
 }
+
 #SelectAtom {
   background-color: #48c774;
   border-radius: 0.5rem;
