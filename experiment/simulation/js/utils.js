@@ -6,14 +6,15 @@ var trueTypeOf = (obj) =>
   Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
 
 var radius_scale = 1 / 100
+var radius_scale = 1 / 100
 var atomDetails = {
   X: {
     radius: 60,
     color: '#5D3FD3',
   },
   Y: {
-    radius: 60,
-    color: '#a9a9a9',
+    radius: 100,
+    color: '#5D3FD3',
   },
   Z: {
     radius: 100,
@@ -55,12 +56,10 @@ export function addSphere(mouse, atomname, camera, scene) {
   raycaster.setFromCamera(mouse, camera)
   raycaster.ray.intersectPlane(plane, intersectionPoint)
   // console.log(atomDetails[atomname]);
+  const radii = document.getElementById('radiiSlider')
+  console.log('radiii is', radii.valueAsNumber)
   const sphereMesh = new THREE.Mesh(
-    new THREE.SphereGeometry(
-      atomDetails[atomname].radius * radius_scale,
-      20,
-      20,
-    ),
+    new THREE.SphereGeometry(radii.valueAsNumber, 20, 20),
     new THREE.MeshStandardMaterial({
       color: atomDetails[atomname].color,
       name: 'sphere',
@@ -79,16 +78,13 @@ export function addSphereAtCoordinate(AddVec, atomname, atomtype = 'default') {
     atomcolor = 0x746c70
     atomopacity = 0.3
   }
+  const radii = document.getElementById('radiiSlider')
   const sphereMesh = new THREE.Mesh(
-    new THREE.SphereGeometry(
-      atomDetails[atomname].radius * radius_scale,
-      20,
-      20,
-    ),
+    new THREE.SphereGeometry(radii.valueAsNumber, 20, 20),
     new THREE.MeshStandardMaterial({
       color: atomcolor,
       name: 'sphere',
-      roughness: 5,
+      roughness: 2,
       transparent: true,
       opacity: atomopacity,
     }),
