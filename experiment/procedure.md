@@ -1,9 +1,10 @@
 ### Procedure
 In this experiment, the user is expected to show the various symmetries that closed packing lattices exhibit. In this experiment, there will be four standard lattices and they are - Simple Cubic, Face Centered Cubic, Body Centered Cubic and Hexagonal Closed Packing.
 The steps for the experiment are as follows
-- The user can choose which lattice they want to work with from the dropdown in the interface.
-- The "select atoms" is a toggle switch that enables users to select atoms. 
-- If one atom is selected, the symmetry being checked for will be center of symmetry. If two atoms are sleected, the symmetry being checked will be axis of symmetry. Similarily if three atoms are selected, plane of symmetry will be checked.
+- The interface will contain a canvas in which the different finite lattices in question are shown.
+- The interface contains a dropdown to select lattice, a button to select atoms (which is a toggle switch), two buttons to visualize symmetries, a button to clear your choices and a button to check the choice made. 
+- In the select mode, left click can be used to select an atom and right click can be used to de-select an atom.
+- If one atom is selected, the symmetry being checked for will be center of symmetry. If two atoms are selected, the symmetry being checked will be axis of symmetry. Similarily if three atoms are selected, plane of symmetry will be checked.
 - The "Check symmetry" button can be used to evaluate the correctness of the choice made.
 - If one atom is selected while clicking the "Check Symmetry" button, it treats the selected atom as the user's choice for the center of symmetry for the given lattice.
 - Similarly, if two atoms are selected, then it treats the axis made by them as the user's choice for axis of symmetry and for three atoms as the user's choice for plane of symmetry for the given lattice. 
