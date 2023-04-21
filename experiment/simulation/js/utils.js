@@ -821,5 +821,18 @@ export function PlaneSymmetry(latticeID, SelectAtomList, atomList) {
   }
 }
 export function CheckSymmetry(latticeID, SelectAtomList, atomList, degree) {
+  if (latticeID == 0) {
+    if (SelectAtomList.length == 1) {
+      return 1
+    }
+    if (SelectAtomList.length == 2) {
+      if ([0, 60, 90, 120, 180, 240, 300, 360].includes(degree)) {
+        return 1
+      }
+    }
+    if (SelectAtomList.length == 3) {
+      return 1
+    }
+  }
   return 0
 }
