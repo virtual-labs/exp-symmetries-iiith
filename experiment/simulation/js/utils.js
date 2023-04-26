@@ -820,19 +820,35 @@ export function PlaneSymmetry(latticeID, SelectAtomList, atomList) {
     }
   }
 }
-export function CheckSymmetry(latticeID, SelectAtomList, atomList, degree) {
-  if (latticeID == 0) {
-    if (SelectAtomList.length == 1) {
-      return 1
-    }
-    if (SelectAtomList.length == 2) {
-      if ([0, 60, 90, 120, 180, 240, 300, 360].includes(degree)) {
-        return 1
+export function CheckSymmetry(
+  latticeID,
+  SelectAtomList,
+  refdummyatomList,
+  atomList,
+  degree,
+) {
+  if (SelectAtomList.length == 1) {
+    return 0
+  }
+  if (SelectAtomList.length == 2) {
+    var overlap = 0
+    for (let i = 0; i < refdummyatomList.length; i++) {
+      for (let j = 0; j < atomList.length; j++) {
+        var dist = refdummyatomList[i].position.distanceTo(atomList[j].position)
+        if (dist <= 0.01) {
+          overlap = overlap + 1
+        }
       }
     }
-    if (SelectAtomList.length == 3) {
-      return 1
-    }
+    console.log(atomList[0], refdummyatomList[0])
+    console.log(overlap)
+    if (overlap == atomList.length) return 1
+    else return 0
   }
+
+  if (SelectAtomList.length == 3) {
+    return 1
+  }
+
   return 0
 }

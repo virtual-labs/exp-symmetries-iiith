@@ -148,13 +148,14 @@ var currentLattice =
 let currentAtomList = createLattice(LatticeList.indexOf(currentLattice))
 for (let i = 0; i < currentAtomList.length; i++) {
   atomList.push(currentAtomList[i])
+  scene.add(currentAtomList[i])
 }
 
-var torotateatomlist = new THREE.Object3D()
-for (let i = 0; i < atomList.length; i++) {
-  torotateatomlist.add(atomList[i])
-}
-scene.add(torotateatomlist)
+// var torotateatomlist = new THREE.Object3D()
+// for (let i = 0; i < atomList.length; i++) {
+//   torotateatomlist.add(atomList[i])
+// }
+// scene.add(torotateatomlist)
 
 var axis = new THREE.Vector3(1, 0, 0)
 var radians = Math.PI / 180
@@ -167,23 +168,29 @@ Slider.oninput = function () {
   sliderval.innerHTML = Slider.valueAsNumber
   radians = (Slider.valueAsNumber / 180) * Math.PI
 
-  scene.remove(torotateatomlist)
-  torotateatomlist = new THREE.Object3D()
+  //   scene.remove(torotateatomlist)
+  //   torotateatomlist = new THREE.Object3D()
 
-  for (let i = 0; i < atomList.length; i++) {
-    torotateatomlist.add(atomList[i])
-  }
+  //   for (let i = 0; i < atomList.length; i++) {
+  //     torotateatomlist.add(atomList[i])
+  //   }
   if (SelectAtomList.length == 2) {
     var pos1 = SelectAtomList[0].position
     var pos2 = SelectAtomList[1].position
     axis.subVectors(pos1, pos2)
   }
-  scene.add(torotateatomlist)
-  torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
+  for (let i = 0; i < atomList.length; i++) {
+    var refpos = referenceAtomList[i].position.clone()
+    var finalpos = refpos.applyAxisAngle(axis.normalize(), radians)
+    atomList[i].position.set(finalpos.x, finalpos.y, finalpos.z)
+  }
+  //   scene.add(torotateatomlist)
+  //   torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
 }
 
 var referenceAtomList = []
 function createReferenceAtoms(currentAtomList) {
+  referenceAtomList = []
   for (let i = 0; i < currentAtomList.length; i++) {
     var pos = currentAtomList[i].position
     var atom = addSphereAtCoordinate(pos, 'Y', 'dummy')
@@ -203,24 +210,15 @@ currentLatticeElement.addEventListener('click', function () {
   for (let i = 0; i < referenceAtomList.length; i++) {
     scene.remove(referenceAtomList[i])
   }
-
-  scene.remove(torotateatomlist)
-
-  for (let i = 0; i < HullMeshList.length; i++) {
-    scene.remove(HullMeshList[i])
-  }
   atomList = []
   referenceAtomList = []
   currentAtomList = createLattice(LatticeList.indexOf(currentLattice))
 
   for (let i = 0; i < currentAtomList.length; i++) {
     atomList.push(currentAtomList[i])
+    scene.add(atomList[i])
   }
-  torotateatomlist = new THREE.Object3D()
-  for (let i = 0; i < atomList.length; i++) {
-    torotateatomlist.add(atomList[i])
-  }
-  scene.add(torotateatomlist)
+
   createReferenceAtoms(currentAtomList)
 })
 
@@ -272,7 +270,7 @@ rSlider.oninput = function () {
   }
   atomList = newatomlist
 
-  scene.remove(torotateatomlist)
+  //   scene.remove(torotateatomlist)
 
   SelectAtomList = []
 }
@@ -311,6 +309,7 @@ checksymmetry.addEventListener('click', function () {
   let out = CheckSymmetry(
     LatticeList.indexOf(currentLattice),
     SelectAtomList,
+    referenceAtomList,
     atomList,
     degree,
   )
@@ -373,10 +372,22 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
+// function testing_rotation() {
+//   for (let i = 0; i < atomList; i++) {
+//     ax = new THREE.Vector3(1, 0, 0)
+
+//     atomList[i].position.applyAxisAngle(ax, Math.PI)
+//   }
+// }
+// var v = new THREE.Vector3(0, 0, 1)
+// var ax = new THREE.Vector3(1, 0, 0)
+// console.log(v)
+// v.applyAxisAngle(ax, Math.PI)
+// // testing_rotation()
+// console.log(v)
 // render the scene and animate
 var render = function () {
   highlightSelectList(SelectAtomList, atomList)
-  console.log(referenceAtomList.length, atomList.length)
   INTERSECTED = CheckHover(mouse, camera, atomList, INTERSECTED)
   requestAnimationFrame(render)
   controls.update()
