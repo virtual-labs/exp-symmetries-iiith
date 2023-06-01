@@ -304,10 +304,23 @@ PlaneSymmetryElement.addEventListener('click', function () {
 // })
 
 var rotation_symmetry_count = 0
+var planar_symmetry_count = 0
+var point_symmetry_count = 0
+
 let lbl = document.getElementById('symmetry-result')
 lbl.innerText = rotation_symmetry_count
   .toString()
   .concat(' out of 6 axis of symmetries found')
+
+let lbl_plane = document.getElementById('symmetry-result-plane')
+lbl_plane.innerText = planar_symmetry_count
+  .toString()
+  .concat(' out of 3 planes of symmetries found')
+
+let lbl_point = document.getElementById('symmetry-result-point')
+lbl_point.innerText = point_symmetry_count
+  .toString()
+  .concat(' out of 1 point of symmetries found')
 
 const checksymmetry = document.getElementById('CheckSymmetry')
 checksymmetry.addEventListener('click', function () {
@@ -324,7 +337,7 @@ checksymmetry.addEventListener('click', function () {
   if (out) {
     rotation_symmetry_count = rotation_symmetry_count + 1
     if (rotation_symmetry_count > 6) {
-      alert('Rotation symmetries have been verified fullfill other symmetries')
+      rotation_symmetry_count = 6
     }
     lbl.innerText = rotation_symmetry_count
       .toString()
