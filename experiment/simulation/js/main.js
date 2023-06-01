@@ -303,6 +303,12 @@ PlaneSymmetryElement.addEventListener('click', function () {
 //   )
 // })
 
+var rotation_symmetry_count = 0
+let lbl = document.getElementById('symmetry-result')
+lbl.innerText = rotation_symmetry_count
+  .toString()
+  .concat(' out of 6 axis of symmetries found')
+
 const checksymmetry = document.getElementById('CheckSymmetry')
 checksymmetry.addEventListener('click', function () {
   var degree = Slider.valueAsNumber
@@ -315,8 +321,18 @@ checksymmetry.addEventListener('click', function () {
   )
   let lbl = document.getElementById('symmetry-result')
 
-  if (out) lbl.innerHTML = "<span style='color: green;'>Correct</span>"
-  else lbl.innerHTML = "<span style='color: red;'>InCorrect</span>"
+  if (out) {
+    rotation_symmetry_count = rotation_symmetry_count + 1
+    if (rotation_symmetry_count > 6) {
+      alert('Rotation symmetries have been verified fullfill other symmetries')
+    }
+    lbl.innerText = rotation_symmetry_count
+      .toString()
+      .concat(' out of 6 axis of symmetries found')
+    SelectAtomList = []
+  } else {
+    alert('incorrect')
+  }
   //SelectAtomList = []
 })
 
