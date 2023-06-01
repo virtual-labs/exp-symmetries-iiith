@@ -332,9 +332,20 @@ checksymmetry.addEventListener('click', function () {
     atomList,
     degree,
   )
-  let lbl = document.getElementById('symmetry-result')
 
-  if (out) {
+  if (out && SelectAtomList.length == 1) {
+    let lbl = document.getElementById('symmetry-result-point')
+    point_symmetry_count = point_symmetry_count + 1
+    if (point_symmetry_count > 1) {
+      point_symmetry_count = 1
+    }
+    lbl.innerText = point_symmetry_count
+      .toString()
+      .concat(' out of 1 point of symmetries found')
+    SelectAtomList = []
+  }
+  if (out && SelectAtomList.length == 2) {
+    let lbl = document.getElementById('symmetry-result')
     rotation_symmetry_count = rotation_symmetry_count + 1
     if (rotation_symmetry_count > 6) {
       rotation_symmetry_count = 6
@@ -343,8 +354,17 @@ checksymmetry.addEventListener('click', function () {
       .toString()
       .concat(' out of 6 axis of symmetries found')
     SelectAtomList = []
-  } else {
-    alert('incorrect')
+  }
+  if (out && SelectAtomList.length == 3) {
+    let lbl = document.getElementById('symmetry-result-plane')
+    plane_symmetry_count = plane_symmetry_count + 1
+    if (plane_symmetry_count > 3) {
+      plane_symmetry_count = 3
+    }
+    lbl.innerText = plane_symmetry_count
+      .toString()
+      .concat(' out of 3 planes of symmetries found')
+    SelectAtomList = []
   }
   //SelectAtomList = []
 })

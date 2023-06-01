@@ -828,7 +828,34 @@ export function CheckSymmetry(
   degree,
 ) {
   if (SelectAtomList.length == 1) {
-    return 0
+    var reflectedList = []
+    var xref = SelectAtomList[0].position.clone().x
+    var yref = SelectAtomList[0].position.clone().y
+    var zref = SelectAtomList[0].position.clone().z
+    for (let i = 0; i < atomList.length; i++) {
+      var x = atomList[i].position.clone().x
+      var y = atomList[i].position.clone().y
+      var z = atomList[i].position.clone().z
+      var xnew = xref - (x - xref)
+      var ynew = yref - (y - yref)
+      var znew = zref - (z - zref)
+      var newpos = new THREE.Vector3(xnew, ynew, znew)
+      reflectedList.push(newpos)
+    }
+    var i, j
+    // compare reflectedList with atomList to see if both arrays have the same vectors
+    for (i = 0; i < atomList.length; i++) {
+      for (j = 0; j < reflectedList.length; j++) {
+        if (
+          Math.abs(atomList[i].position.x - reflectedList[j].x) < 0.01 &&
+          Math.abs(atomList[i].position.y - reflectedList[j].y) < 0.01 &&
+          Math.abs(atomList[i].position.z - reflectedList[j].z) < 0.01
+        )
+          break
+      }
+      if (j == reflectedList.length) return 0
+    }
+    return 1
   }
   if (SelectAtomList.length == 2) {
     var overlap = 0
@@ -847,6 +874,39 @@ export function CheckSymmetry(
   }
 
   if (SelectAtomList.length == 3) {
+    var reflectedList = []
+    var pos1 = SelectAtomList[0].position.clone()
+    var pos2 = SelectAtomList[1].position.clone()
+    var pos3 = SelectAtomList[2].position.clone()
+    let a1 = pos2.x - pos1.x
+    let b1 = pos2.y - pos1.y
+    let c1 = pos2.z - pos1.z
+    let a2 = pos3.x - pos1.x
+    let b2 = pos3.y - pos1.y
+    let c2 = pos3.z - pos1.z
+    let a = b1 * c2 - b2 * c1
+    let b = a2 * c1 - a1 * c2
+    let c = a1 * b2 - b1 * a2
+    let d = -a * pos1.x - b * pos1.y - c * pos1.z
+    for (let i = 0; i < atomList.length; i++) {
+      let x = atomList[i].position.clone().x
+      let y = atomList[i].position.clone().y
+      let z = atomList[i].position.clone().z
+      let t = -2 * ((a * x + b * y + c * z + d) / (a * a + b * b + c * c))
+      reflectedList[i].position.set(x + t * a, y + t * b, z + t * c)
+    }
+    var i, j
+    for (i = 0; i < atomList.length; i++) {
+      for (j = 0; j < reflectedList.length; j++) {
+        if (
+          Math.abs(atomList[i].position.x - reflectedList[j].x) < 0.01 &&
+          Math.abs(atomList[i].position.y - reflectedList[j].y) < 0.01 &&
+          Math.abs(atomList[i].position.z - reflectedList[j].z) < 0.01
+        )
+          break
+      }
+      if (j == reflectedList.length) return 0
+    }
     return 1
   }
 
