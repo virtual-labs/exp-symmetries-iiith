@@ -5,9 +5,9 @@ body {
 aside {
   height: 90vh;
 }
-.page {
+/* .page {
   overflow: hidden;
-}
+} */
 
 .smol-font {
   font-size: x-small;
