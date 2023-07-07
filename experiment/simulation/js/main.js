@@ -21,6 +21,7 @@ import {
   CheckSymmetry,
   PlaneSymmetry,
   PointSymmetry,
+  RotationSymmetry,
 } from './utils.js'
 
 // init container
@@ -160,32 +161,42 @@ for (let i = 0; i < currentAtomList.length; i++) {
 var axis = new THREE.Vector3(1, 0, 0)
 var radians = Math.PI / 180
 
-const Slider = document.getElementById('Slider')
-const sliderval = document.getElementById('sliderval')
-sliderval.innerHTML = Slider.valueAsNumber
+var Slider = document.getElementById('Slider')
+var sliderval = document.getElementById('sliderval')
+sliderval.placeholder = Slider.valueAsNumber
+sliderval.value = Slider.valueAsNumber
 
-Slider.oninput = function () {
-  sliderval.innerHTML = Slider.valueAsNumber
+var AxisatomList = []
+
+function SliderRotateAtoms() {
+  sliderval.placeholder = Slider.valueAsNumber
+  sliderval.value = Slider.valueAsNumber
   radians = (Slider.valueAsNumber / 180) * Math.PI
 
-  //   scene.remove(torotateatomlist)
-  //   torotateatomlist = new THREE.Object3D()
-
-  //   for (let i = 0; i < atomList.length; i++) {
-  //     torotateatomlist.add(atomList[i])
-  //   }
-  if (SelectAtomList.length == 2) {
-    var pos1 = SelectAtomList[0].position
-    var pos2 = SelectAtomList[1].position
+  if (AxisatomList.length != 0) {
+    var pos1 = AxisatomList[AxisatomList.length - 1].head.position
+    var pos2 = AxisatomList[AxisatomList.length - 1].tail.position
     axis.subVectors(pos1, pos2)
   }
+  var reference = pos2.clone()
+
   for (let i = 0; i < atomList.length; i++) {
-    var refpos = referenceAtomList[i].position.clone()
+    var refpos = new THREE.Vector3()
+    refpos.subVectors(referenceAtomList[i].position, reference)
+
     var finalpos = refpos.applyAxisAngle(axis.normalize(), radians)
     atomList[i].position.set(finalpos.x, finalpos.y, finalpos.z)
+    atomList[i].position.add(reference)
   }
-  //   scene.add(torotateatomlist)
-  //   torotateatomlist.rotateOnWorldAxis(axis.normalize(), radians)
+}
+
+Slider.oninput = function () {
+  SliderRotateAtoms()
+}
+
+sliderval.oninput = function () {
+  Slider.value = sliderval.value
+  SliderRotateAtoms()
 }
 
 var referenceAtomList = []
@@ -234,13 +245,16 @@ toggleselectbutton.addEventListener('click', function () {
 const ClearStuff = document.getElementById('ClearSelection')
 ClearStuff.addEventListener('click', function () {
   SelectAtomList = []
-  for (let i = 0; i < HullList.length; i++) {
-    scene.remove(HullList[i])
-  }
-  HullList = []
   //add vector removal here
 })
 
+const ClearObjects = document.getElementById('ClearObjects')
+ClearObjects.addEventListener('click', function () {
+  for (let i = 0; i < AxisArrows.length; i++) {
+    scene.remove(AxisArrows[i])
+  }
+  AxisArrows = []
+})
 const rSlider = document.getElementById('radiiSlider')
 const rsliderval = document.getElementById('radiisliderval')
 rsliderval.innerHTML = rSlider.valueAsNumber
@@ -276,24 +290,51 @@ rSlider.oninput = function () {
 }
 
 // respond to check selected lattice
-
-const PointSymmetryElement = document.getElementById('PointSymmetry')
-PointSymmetryElement.addEventListener('click', function () {
-  let out = PointSymmetry(
-    LatticeList.indexOf(currentLattice),
-    SelectAtomList,
-    atomList,
-  )
+let AxisArrows = []
+var VisualizeElement = document.getElementById('VisualizeSymmetry')
+VisualizeElement.addEventListener('click', function () {
+  if (SelectAtomList.length == 1) {
+    let out = PointSymmetry(
+      LatticeList.indexOf(currentLattice),
+      SelectAtomList,
+      atomList,
+    )
+  } else if (SelectAtomList.length == 2) {
+    let obj = RotationSymmetry(
+      LatticeList.indexOf(currentLattice),
+      SelectAtomList,
+      atomList,
+      AxisatomList,
+    )
+    scene.add(obj.arrow)
+    AxisArrows.push(obj.arrow)
+    AxisatomList.push(obj.axisatoms)
+  } else if (SelectAtomList.length == 3) {
+    let out = PlaneSymmetry(
+      LatticeList.indexOf(currentLattice),
+      SelectAtomList,
+      atomList,
+    )
+  }
 })
 
-const PlaneSymmetryElement = document.getElementById('PlaneSymmetry')
-PlaneSymmetryElement.addEventListener('click', function () {
-  let out = PlaneSymmetry(
-    LatticeList.indexOf(currentLattice),
-    SelectAtomList,
-    atomList,
-  )
-})
+// const PointSymmetryElement = document.getElementById('PointSymmetry')
+// PointSymmetryElement.addEventListener('click', function () {
+//let out = PlaneSymmetry(
+//     LatticeList.indexOf(currentLattice),
+//     SelectAtomList,
+//     atomList,
+//   )
+// })
+
+// const PlaneSymmetryElement = document.getElementById('PlaneSymmetry')
+// PlaneSymmetryElement.addEventListener('click', function () {
+//   let out = PlaneSymmetry(
+//     LatticeList.indexOf(currentLattice),
+//     SelectAtomList,
+//     atomList,
+//   )
+// })
 // const PerformAction = document.getElementById('PerformAction')
 // PerformAction.addEventListener('click', function () {
 //   let out = performaction(
@@ -310,18 +351,19 @@ var point_symmetry_count = 0
 let lbl = document.getElementById('symmetry-result')
 lbl.innerText = rotation_symmetry_count
   .toString()
-  .concat(' out of 6 axis of symmetries found')
+  .concat(' out of 13 axis of symmetries found')
 
 let lbl_plane = document.getElementById('symmetry-result-plane')
 lbl_plane.innerText = planar_symmetry_count
   .toString()
-  .concat(' out of 3 planes of symmetries found')
+  .concat(' out of 9 planes of symmetries found')
 
 let lbl_point = document.getElementById('symmetry-result-point')
 lbl_point.innerText = point_symmetry_count
   .toString()
   .concat(' out of 1 point of symmetries found')
 
+let rotation_symmetry_degrees = { 90: 0, 120: 0, 180: 0 }
 const checksymmetry = document.getElementById('CheckSymmetry')
 checksymmetry.addEventListener('click', function () {
   var degree = Slider.valueAsNumber
@@ -332,40 +374,44 @@ checksymmetry.addEventListener('click', function () {
     atomList,
     degree,
   )
-
-  if (out && SelectAtomList.length == 1) {
-    let lbl = document.getElementById('symmetry-result-point')
-    point_symmetry_count = point_symmetry_count + 1
-    if (point_symmetry_count > 1) {
-      point_symmetry_count = 1
-    }
-    lbl.innerText = point_symmetry_count
-      .toString()
-      .concat(' out of 1 point of symmetries found')
-    SelectAtomList = []
-  }
-  if (out && SelectAtomList.length == 2) {
+  if (out) {
     let lbl = document.getElementById('symmetry-result')
-    rotation_symmetry_count = rotation_symmetry_count + 1
-    if (rotation_symmetry_count > 6) {
-      rotation_symmetry_count = 6
-    }
-    lbl.innerText = rotation_symmetry_count
-      .toString()
-      .concat(' out of 6 axis of symmetries found')
-    SelectAtomList = []
+    lbl.innerText = 'correct'
   }
-  if (out && SelectAtomList.length == 3) {
-    let lbl = document.getElementById('symmetry-result-plane')
-    plane_symmetry_count = plane_symmetry_count + 1
-    if (plane_symmetry_count > 3) {
-      plane_symmetry_count = 3
-    }
-    lbl.innerText = plane_symmetry_count
-      .toString()
-      .concat(' out of 3 planes of symmetries found')
-    SelectAtomList = []
-  }
+
+  //   if (out && SelectAtomList.length == 1) {
+  //     let lbl = document.getElementById('symmetry-result-point')
+  //     point_symmetry_count = point_symmetry_count + 1
+  //     if (point_symmetry_count > 1) {
+  //       point_symmetry_count = 1
+  //     }
+  //     lbl.innerText = point_symmetry_count
+  //       .toString()
+  //       .concat(' out of 1 point of symmetries found')
+  //     SelectAtomList = []
+  //   }
+  //   if (out && SelectAtomList.length == 2) {
+  //     let lbl = document.getElementById('symmetry-result')
+  //     rotation_symmetry_count = rotation_symmetry_count + 1
+  //     if (rotation_symmetry_count > 13) {
+  //       rotation_symmetry_count = 13
+  //     }
+  //     lbl.innerText = rotation_symmetry_count
+  //       .toString()
+  //       .concat(' out of 13 axis of symmetries found')
+  //     SelectAtomList = []
+  //   }
+  //   if (out && SelectAtomList.length == 3) {
+  //     let lbl = document.getElementById('symmetry-result-plane')
+  //     plane_symmetry_count = plane_symmetry_count + 1
+  //     if (plane_symmetry_count > 9) {
+  //       plane_symmetry_count = 9
+  //     }
+  //     lbl.innerText = plane_symmetry_count
+  //       .toString()
+  //       .concat(' out of 9 planes of symmetries found')
+  //     SelectAtomList = []
+  //   }
   //SelectAtomList = []
 })
 

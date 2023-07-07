@@ -709,6 +709,28 @@ export function PointSymmetry(latticeID, SelectAtomList, atomList) {
     }
   }
 }
+export function RotationSymmetry(
+  latticeID,
+  SelectAtomList,
+  atomList,
+  AxispointList,
+) {
+  var tail = SelectAtomList[0]
+  var head = SelectAtomList[1]
+  var dir = new THREE.Vector3()
+  dir.subVectors(head.position, tail.position)
+
+  //normalize the direction vector (convert to vector of length 1)
+  dir.normalize()
+  const length = head.position.distanceTo(tail.position)
+  const hex = 0xffff00
+  const arrow = new THREE.ArrowHelper(dir, tail.position, length, hex)
+
+  return {
+    arrow: arrow,
+    axisatoms: { head: SelectAtomList[1], tail: SelectAtomList[0] },
+  }
+}
 
 export function PlaneSymmetry(latticeID, SelectAtomList, atomList) {
   if (latticeID == 0) {
