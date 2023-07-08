@@ -848,6 +848,7 @@ export function CheckSymmetry(
   refdummyatomList,
   atomList,
   degree,
+  AxisatomList,
 ) {
   if (SelectAtomList.length == 1) {
     var reflectedList = []
@@ -889,10 +890,25 @@ export function CheckSymmetry(
         }
       }
     }
-    console.log(atomList[0], refdummyatomList[0])
-    console.log(overlap)
-    if (overlap == atomList.length) return 1
-    else return 0
+
+    if (overlap == atomList.length) {
+      console.log('chekcing')
+      var tail = SelectAtomList[0].position.clone()
+      var head = SelectAtomList[1].position.clone()
+      console.log(AxisatomList)
+      console.log('selected', SelectAtomList)
+      var count = 0
+      for (let i = 0; i < AxisatomList.length; i++) {
+        if (
+          (head.distanceTo(AxisatomList[i].tail.position) < 0.001 &&
+            tail.distanceTo(AxisatomList[i].head.position) < 0.001) ||
+          (tail.distanceTo(AxisatomList[i].tail.position) < 0.001 &&
+            head.distanceTo(AxisatomList[i].head.position) < 0.001)
+        )
+          count = count + 1
+      }
+      if (count == 1) return 1
+    } else return 0
   }
 
   if (SelectAtomList.length == 3) {

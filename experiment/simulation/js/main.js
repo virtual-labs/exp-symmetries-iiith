@@ -348,71 +348,86 @@ var rotation_symmetry_count = 0
 var planar_symmetry_count = 0
 var point_symmetry_count = 0
 
-let lbl = document.getElementById('symmetry-result')
+let lbl = document.getElementById('symmetry-result-rotate')
 lbl.innerText = rotation_symmetry_count
   .toString()
-  .concat(' out of 13 axis of symmetries found')
+  .concat(' axis of symmetries found')
 
 let lbl_plane = document.getElementById('symmetry-result-plane')
 lbl_plane.innerText = planar_symmetry_count
   .toString()
-  .concat(' out of 9 planes of symmetries found')
+  .concat(' planes of symmetries found')
 
 let lbl_point = document.getElementById('symmetry-result-point')
 lbl_point.innerText = point_symmetry_count
   .toString()
-  .concat(' out of 1 point of symmetries found')
+  .concat(' 1 point of symmetries found')
 
 let rotation_symmetry_degrees = { 90: 0, 120: 0, 180: 0 }
 const checksymmetry = document.getElementById('CheckSymmetry')
 checksymmetry.addEventListener('click', function () {
   var degree = Slider.valueAsNumber
-  let out = CheckSymmetry(
-    LatticeList.indexOf(currentLattice),
-    SelectAtomList,
-    referenceAtomList,
-    atomList,
-    degree,
-  )
-  if (out) {
-    let lbl = document.getElementById('symmetry-result')
-    lbl.innerText = 'correct'
-  }
 
-  //   if (out && SelectAtomList.length == 1) {
-  //     let lbl = document.getElementById('symmetry-result-point')
-  //     point_symmetry_count = point_symmetry_count + 1
-  //     if (point_symmetry_count > 1) {
-  //       point_symmetry_count = 1
-  //     }
-  //     lbl.innerText = point_symmetry_count
-  //       .toString()
-  //       .concat(' out of 1 point of symmetries found')
-  //     SelectAtomList = []
-  //   }
-  //   if (out && SelectAtomList.length == 2) {
+  //   if (out) {
   //     let lbl = document.getElementById('symmetry-result')
-  //     rotation_symmetry_count = rotation_symmetry_count + 1
-  //     if (rotation_symmetry_count > 13) {
-  //       rotation_symmetry_count = 13
-  //     }
-  //     lbl.innerText = rotation_symmetry_count
-  //       .toString()
-  //       .concat(' out of 13 axis of symmetries found')
-  //     SelectAtomList = []
+  //     lbl.innerText = 'correct'
   //   }
-  //   if (out && SelectAtomList.length == 3) {
-  //     let lbl = document.getElementById('symmetry-result-plane')
-  //     plane_symmetry_count = plane_symmetry_count + 1
-  //     if (plane_symmetry_count > 9) {
-  //       plane_symmetry_count = 9
-  //     }
-  //     lbl.innerText = plane_symmetry_count
-  //       .toString()
-  //       .concat(' out of 9 planes of symmetries found')
-  //     SelectAtomList = []
-  //   }
-  //SelectAtomList = []
+
+  if (SelectAtomList.length == 1) {
+    let out = CheckSymmetry(
+      LatticeList.indexOf(currentLattice),
+      SelectAtomList,
+      referenceAtomList,
+      atomList,
+      degree,
+      AxisatomList,
+    )
+    if (out) {
+      let lbl = document.getElementById('symmetry-result-point')
+      point_symmetry_count = point_symmetry_count + 1
+      if (point_symmetry_count > 1) {
+        point_symmetry_count = 1
+      }
+      lbl.innerText = point_symmetry_count
+        .toString()
+        .concat(' point of symmetries found')
+      // SelectAtomList = []
+    }
+  }
+  if (SelectAtomList.length == 2) {
+    let out = CheckSymmetry(
+      LatticeList.indexOf(currentLattice),
+      SelectAtomList,
+      referenceAtomList,
+      atomList,
+      degree,
+      AxisatomList,
+    )
+    if (out) {
+      let lbl = document.getElementById('symmetry-result-rotate')
+      rotation_symmetry_count = rotation_symmetry_count + 1
+
+      lbl.innerText = rotation_symmetry_count
+        .toString()
+        .concat(' axis of symmetries found')
+    } else {
+      var incorrectarrow = AxisArrows.pop()
+      scene.remove(incorrectarrow)
+      alert('incorrect new Axis of symmetry ')
+    }
+  }
+  if (SelectAtomList.length == 3) {
+    // let lbl = document.getElementById('symmetry-result-plane')
+    // plane_symmetry_count = plane_symmetry_count + 1
+    // if (plane_symmetry_count > 9) {
+    //   plane_symmetry_count = 9
+    // }
+    // lbl.innerText = plane_symmetry_count
+    //   .toString()
+    //   .concat(' out of 9 planes of symmetries found')
+    // SelectAtomList = []
+  }
+  SelectAtomList = []
 })
 
 // make the window responsive
