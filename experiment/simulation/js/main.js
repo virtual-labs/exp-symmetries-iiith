@@ -152,12 +152,6 @@ for (let i = 0; i < currentAtomList.length; i++) {
   scene.add(currentAtomList[i])
 }
 
-// var torotateatomlist = new THREE.Object3D()
-// for (let i = 0; i < atomList.length; i++) {
-//   torotateatomlist.add(atomList[i])
-// }
-// scene.add(torotateatomlist)
-
 var axis = new THREE.Vector3(1, 0, 0)
 var radians = Math.PI / 180
 
@@ -177,16 +171,18 @@ function SliderRotateAtoms() {
     var pos1 = AxisatomList[AxisatomList.length - 1].head.position
     var pos2 = AxisatomList[AxisatomList.length - 1].tail.position
     axis.subVectors(pos1, pos2)
-  }
-  var reference = pos2.clone()
 
-  for (let i = 0; i < atomList.length; i++) {
-    var refpos = new THREE.Vector3()
-    refpos.subVectors(referenceAtomList[i].position, reference)
+    var reference = pos2.clone()
 
-    var finalpos = refpos.applyAxisAngle(axis.normalize(), radians)
-    atomList[i].position.set(finalpos.x, finalpos.y, finalpos.z)
-    atomList[i].position.add(reference)
+    for (let i = 0; i < atomList.length; i++) {
+      var refpos = new THREE.Vector3()
+      refpos.subVectors(referenceAtomList[i].position, reference)
+
+      var finalpos = refpos.applyAxisAngle(axis.normalize(), radians)
+      atomList[i].position.set(finalpos.x, finalpos.y, finalpos.z)
+      atomList[i].position.add(reference)
+    }
+    console.log('how', AxisatomList)
   }
 }
 
@@ -254,6 +250,7 @@ ClearObjects.addEventListener('click', function () {
     scene.remove(AxisArrows[i])
   }
   AxisArrows = []
+  AxisatomList = []
 })
 const rSlider = document.getElementById('radiiSlider')
 const rsliderval = document.getElementById('radiisliderval')
