@@ -1,0 +1,89 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "Which of these symmetries occur in nature?",
+      "answers": {
+        "a": "Centre of symmetry",
+        "b": "Axis of symmetry",
+        "c": "Plane of symmetry",
+        "d": "ALl of the above"
+      },
+      "explanations": {
+        "d": "All these symmetries are possible in nature"
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "How many centers of symmetry does a simple cube have?",
+      "answers": {
+        "a": "0",
+        "b": "1",
+        "c": "2",
+        "d": "3"
+      },
+      "explanations": {
+        "b": "Only the center of the cube is the center of symmetry"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+        {
+      "question": "What is the minimum rotation(in degrees)required for restoring originality in a 4 fold axis of symmetry?",
+      "answers": {
+        "a": "0",
+        "b": "90",
+        "c": "180",
+        "d": "270"
+      },
+      "explanations": {
+        "b": "4 fold symmetry implies minimum angle is 360/4 which is 90 degrees"
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+        {
+      "question": "How many 2-fold axes of symmetry does a cube have?",
+      "answers": {
+        "a": "2",
+        "b": "3",
+        "c": "6",
+        "d": "8"
+      },
+      "explanations": {
+        "c": "A cube has six 2-fold axes of symmetry"
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+        {
+      "question": "How many planes of symmetry does a cube have which do not pass through a vertex",
+      "answers": {
+        "a": "0",
+        "b": "1",
+        "c": "2",
+        "d": "3"
+      },
+      "explanations": {
+        "d": "There are three planes of symmetry that do not pass through a vertex"
+      },
+      "correctAnswer": "d",
+      "difficulty": "advanced"
+    },
+        {
+      "question": "How many planes of symmetry does a cube have?",
+      "answers": {
+        "a": "9",
+        "b": "12",
+        "c": "3",
+        "d": "1"
+      },
+      "explanations": {
+        "a": "Although it might appear that a cube has 12 planes of symmetry, three of them repeat and hence can be omitted"
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    }
+  ]
+}
