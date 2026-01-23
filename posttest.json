@@ -1,0 +1,89 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "How many centers of symmetry does a SCP unit cell have?",
+      "answers": {
+        "a": "0",
+        "b": "1",
+        "c": "2",
+        "d": "3"
+      },
+      "explanations": {
+        "b": "SCP only has one center of symmetry, at the center of the unit cell"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "How many centers of symmetry does a BCC unit cell have?",
+      "answers": {
+        "a": "0",
+        "b": "1",
+        "c": "2",
+        "d": "3"
+      },
+      "explanations": {
+        "b": "BCC only has one center of symmetry, at the center of the unit cell"
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+        {
+      "question": "How many planes of symmetry does a SCP unit cell have?",
+      "answers": {
+        "a": "1",
+        "b": "4",
+        "c": "6",
+        "d": "9"
+      },
+      "explanations": {
+        "d": "A SCP unit cell has 9 planes of symmetry"
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+        {
+      "question": "How many planes of symmetry does a BCC unit cell have?",
+      "answers": {
+        "a": "1",
+        "b": "4",
+        "c": "6",
+        "d": "9"
+      },
+      "explanations": {
+        "d": "A BCC unit cell has 9 planes of symmetry"
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+        {
+      "question": "How many 4-fold axes of symmetry does the FCC unit cell have?",
+      "answers": {
+        "a": "3",
+        "b": "4",
+        "c": "5",
+        "d": "6"
+      },
+      "explanations": {
+        "a": "A FCC unit cell has three 4-fold axes of symmetry"
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+        {
+      "question": "How many 2-fold axes of symmetry does the HCP unit cell have?",
+      "answers": {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "d": "4"
+      },
+      "explanations": {
+        "c": "A HCP unit cell has three 2-fold axes of symmetry"
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    }
+  ]
+}
