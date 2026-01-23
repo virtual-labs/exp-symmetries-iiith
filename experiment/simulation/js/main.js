@@ -24,6 +24,9 @@ import {
   RotationSymmetry,
 } from './utils.js'
 
+// --- FIX 1: Force Toggle to OFF state on load ---
+document.getElementById('ToggleSelect').checked = false
+
 // init container
 var container = document.getElementById('canvas-main')
 
@@ -125,8 +128,6 @@ document.addEventListener('mousedown', function (event) {
 })
 
 document.addEventListener('mousemove', function (event) {
-  // We don't strictly set drag=true here anymore to avoid jitter issues.
-  // We calculate distance in mouseup instead.
   mouse = getMouseCoords(event)
 })
 
@@ -210,26 +211,44 @@ function createReferenceAtoms(currentAtomList) {
 }
 createReferenceAtoms(currentAtomList)
 
+// --- SHARED RESET FUNCTION (UX Fix) ---
+function resetLattice() {
+    // 1. Remove arrows
+    for (let i = 0; i < AxisArrows.length; i++) {
+        scene.remove(AxisArrows[i])
+    }
+    AxisArrows = []
+    AxisatomList = []
+
+    // 2. Clear selections and hover state
+    SelectAtomList = []
+    INTERSECTED = null;
+
+    // 3. FULL VISUALIZATION RESET: Remove and recreate the lattice
+    for (let i = 0; i < atomList.length; i++) {
+        scene.remove(atomList[i])
+    }
+    for (let i = 0; i < referenceAtomList.length; i++) {
+        scene.remove(referenceAtomList[i])
+    }
+    atomList = []
+    referenceAtomList = []
+
+    // Recreate the current lattice from scratch
+    currentAtomList = createLattice(LatticeList.indexOf(currentLattice))
+    for (let i = 0; i < currentAtomList.length; i++) {
+        atomList.push(currentAtomList[i])
+        scene.add(currentAtomList[i])
+    }
+    createReferenceAtoms(currentAtomList)
+}
+
 currentLatticeElement.addEventListener('click', function () {
   currentLattice =
     currentLatticeElement.options[currentLatticeElement.selectedIndex].text
 
-  for (let i = 0; i < atomList.length; i++) {
-    scene.remove(atomList[i])
-  }
-  for (let i = 0; i < referenceAtomList.length; i++) {
-    scene.remove(referenceAtomList[i])
-  }
-  atomList = []
-  referenceAtomList = []
-  currentAtomList = createLattice(LatticeList.indexOf(currentLattice))
-
-  for (let i = 0; i < currentAtomList.length; i++) {
-    atomList.push(currentAtomList[i])
-    scene.add(atomList[i])
-  }
-
-  createReferenceAtoms(currentAtomList)
+  // Use the new reset function when changing lattice too, for consistency
+  resetLattice(); 
 })
 
 let toggleselectbutton = document.getElementById('ToggleSelect')
@@ -241,22 +260,21 @@ toggleselectbutton.addEventListener('click', function () {
     // SelectAtomList = []
   }
 })
+
+// --- UPDATED EVENT LISTENERS ---
+
 const ClearStuff = document.getElementById('ClearSelection')
 ClearStuff.addEventListener('click', function () {
-  SelectAtomList = []
-  INTERSECTED = null;
-  //add vector removal here
+    // UX DECISION: Clearing selection also resets visualization to avoid
+    // selecting on a distorted lattice.
+    resetLattice(); 
 })
 
 const ClearObjects = document.getElementById('ClearObjects')
 ClearObjects.addEventListener('click', function () {
-  for (let i = 0; i < AxisArrows.length; i++) {
-    scene.remove(AxisArrows[i])
-  }
-  AxisArrows = []
-  AxisatomList = []
-  SelectAtomList = [] // Added to reset selection state matches logic
+    resetLattice();
 })
+
 const rSlider = document.getElementById('radiiSlider')
 const rsliderval = document.getElementById('radiisliderval')
 rsliderval.innerHTML = rSlider.valueAsNumber
@@ -400,7 +418,7 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix()
 })
 
-// UPDATED MOUSEUP LOGIC
+// UPDATED MOUSEUP LOGIC (Jitter Fix + Reset Logic)
 document.addEventListener('mouseup', function (event) {
   // Calculate distance moved
   let diffX = Math.abs(event.clientX - startX)
