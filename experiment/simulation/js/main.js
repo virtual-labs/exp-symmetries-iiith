@@ -108,22 +108,25 @@ function getMouseCoords(event) {
     ) *
       2 +
     1
-  // mouse.x = ( ( event.clientX - container.offsetLeft ) / container.clientWidth ) * 2 - 1;
-  // mouse.y = - ( ( event.clientY - container.offsetTop ) / container.clientHeight ) * 2 + 1;
-  // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  // console.log(mouse);
   return mouse
 }
 var mouse = new THREE.Vector2()
-//  detect mouse click
+
+//  detect mouse click with jitter tolerance
 let drag = false
+let startX = 0
+let startY = 0
+
 document.addEventListener('mousedown', function (event) {
   drag = false
+  startX = event.clientX
+  startY = event.clientY
   mouse = getMouseCoords(event)
 })
+
 document.addEventListener('mousemove', function (event) {
-  drag = true
+  // We don't strictly set drag=true here anymore to avoid jitter issues.
+  // We calculate distance in mouseup instead.
   mouse = getMouseCoords(event)
 })
 
@@ -241,6 +244,7 @@ toggleselectbutton.addEventListener('click', function () {
 const ClearStuff = document.getElementById('ClearSelection')
 ClearStuff.addEventListener('click', function () {
   SelectAtomList = []
+  INTERSECTED = null;
   //add vector removal here
 })
 
@@ -251,6 +255,7 @@ ClearObjects.addEventListener('click', function () {
   }
   AxisArrows = []
   AxisatomList = []
+  SelectAtomList = [] // Added to reset selection state matches logic
 })
 const rSlider = document.getElementById('radiiSlider')
 const rsliderval = document.getElementById('radiisliderval')
@@ -315,32 +320,6 @@ VisualizeElement.addEventListener('click', function () {
   }
 })
 
-// const PointSymmetryElement = document.getElementById('PointSymmetry')
-// PointSymmetryElement.addEventListener('click', function () {
-//let out = PlaneSymmetry(
-//     LatticeList.indexOf(currentLattice),
-//     SelectAtomList,
-//     atomList,
-//   )
-// })
-
-// const PlaneSymmetryElement = document.getElementById('PlaneSymmetry')
-// PlaneSymmetryElement.addEventListener('click', function () {
-//   let out = PlaneSymmetry(
-//     LatticeList.indexOf(currentLattice),
-//     SelectAtomList,
-//     atomList,
-//   )
-// })
-// const PerformAction = document.getElementById('PerformAction')
-// PerformAction.addEventListener('click', function () {
-//   let out = performaction(
-//     LatticeList.indexOf(currentLattice),
-//     SelectAtomList,
-//     atomList,
-//   )
-// })
-
 var rotation_symmetry_count = 0
 var planar_symmetry_count = 0
 var point_symmetry_count = 0
@@ -364,11 +343,6 @@ let rotation_symmetry_degrees = { 90: 0, 120: 0, 180: 0 }
 const checksymmetry = document.getElementById('CheckSymmetry')
 checksymmetry.addEventListener('click', function () {
   var degree = Slider.valueAsNumber
-
-  //   if (out) {
-  //     let lbl = document.getElementById('symmetry-result')
-  //     lbl.innerText = 'correct'
-  //   }
 
   if (SelectAtomList.length == 1) {
     let out = CheckSymmetry(
@@ -414,15 +388,7 @@ checksymmetry.addEventListener('click', function () {
     }
   }
   if (SelectAtomList.length == 3) {
-    // let lbl = document.getElementById('symmetry-result-plane')
-    // plane_symmetry_count = plane_symmetry_count + 1
-    // if (plane_symmetry_count > 9) {
-    //   plane_symmetry_count = 9
-    // }
-    // lbl.innerText = plane_symmetry_count
-    //   .toString()
-    //   .concat(' out of 9 planes of symmetries found')
-    // SelectAtomList = []
+      // logic for plane symmetry
   }
   SelectAtomList = []
 })
@@ -434,7 +400,19 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix()
 })
 
+// UPDATED MOUSEUP LOGIC
 document.addEventListener('mouseup', function (event) {
+  // Calculate distance moved
+  let diffX = Math.abs(event.clientX - startX)
+  let diffY = Math.abs(event.clientY - startY)
+
+  // If moved less than 5 pixels, consider it a click (not a drag)
+  if (diffX < 5 && diffY < 5) {
+    drag = false
+  } else {
+    drag = true
+  }
+
   if (drag == false) {
     // if the action is add atom
     if (action == 'addAtom') {
@@ -479,20 +457,6 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
-// function testing_rotation() {
-//   for (let i = 0; i < atomList; i++) {
-//     ax = new THREE.Vector3(1, 0, 0)
-
-//     atomList[i].position.applyAxisAngle(ax, Math.PI)
-//   }
-// }
-// var v = new THREE.Vector3(0, 0, 1)
-// var ax = new THREE.Vector3(1, 0, 0)
-// console.log(v)
-// v.applyAxisAngle(ax, Math.PI)
-// // testing_rotation()
-// console.log(v)
-// render the scene and animate
 var render = function () {
   highlightSelectList(SelectAtomList, atomList)
   INTERSECTED = CheckHover(mouse, camera, atomList, INTERSECTED)
